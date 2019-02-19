@@ -16,10 +16,10 @@ Once inside, use the **ESC** key to exit the program at anytime.
 
 ### Controls
 
-**Arrow Up and Down** to move forward and backward
-**Arrow Left and Right** to turn left and right
-Hold **Shift** to move faster
-**Tab** cycles between control legend, minimap, and inactive.  Legend is on by default.
+* **Arrow Up and Down** to move forward and backward
+* **Arrow Left and Right** to turn left and right
+* Hold **Shift** to move faster
+* **Tab** cycles between control legend, minimap, and inactive.  Legend is on by default.
 
 ### Map-making
 
