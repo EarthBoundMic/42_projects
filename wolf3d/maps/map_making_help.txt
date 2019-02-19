@@ -1,0 +1,11 @@
+Welcome to the simple map making tutorial
+
+Here are the rules for making a map:
+
+1. W's are walls, so make sure at minimum the edges are all walls
+2. .'s are the floor...place them anywhere within the boundary
+3. One P is for player starting position...must have one and only one
+4. Map size can be anywhere between a 2x2 and a 50x50
+5. Only horizontal size of the map can be bigger...won't accept a vertical map.
+
+Have fun being creative!!
