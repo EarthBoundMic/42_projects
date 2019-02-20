@@ -31,19 +31,19 @@ Specifies size for what is being converted.
 
 ### Conversions supported
 
-- **diouxX** **d** and **i** are signed ints, **o**, **u**, **x**, and **X** are unsigned ints.  **o** converts decimal to octal, **x** and **X** converts to hexadecimal.  **x** uses lowercase letters and **X** uses uppercase.
-- **DOU**    Changes conversion to long int, the same as **ld**, **lo**, and **lu**.
-- **cs**     **c** changes int argument to unsigned char and prints approprioate character.  **s** points to a character string argument and prints it.
-- **CS**     Same as **lc** and **ls**.
-- **p**      Void* argument prints as hexadecimal.
-- **%**      Prints a '**%**'.
+- **diouxX**: **d** and **i** are signed ints, **o**, **u**, **x**, and **X** are unsigned ints.  **o** converts decimal to octal, **x** and **X** converts to hexadecimal.  **x** uses lowercase letters and **X** uses uppercase.
+- **DOU**: Changes conversion to long int, the same as **ld**, **lo**, and **lu**.
+- **cs**: **c** changes int argument to unsigned char and prints approprioate character.  **s** points to a character string argument and prints it.
+- **CS**: Same as **lc** and **ls**.
+- **p**: Void* argument prints as hexadecimal.
+- **%**: Prints a '**%**'.
 
 ### Extras
 
 These are extra conversions I implemented for more flexibility.
 
-- **b**       Converts digit to binary.  Same flag support as **o** and **x**.
-- **k**       Adds the current system time.  Doesn't use an argument.
+- **b**: Converts digit to binary.  Same flag support as **o** and **x**.
+- **k**: Adds the current system time.  Doesn't use an argument.
 
 ## Examples
 
