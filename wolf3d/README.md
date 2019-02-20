@@ -43,6 +43,8 @@ These were considered extra for the purposes of a minimum working program.
 
 ## About
 
+![Image](wolf3d_capture.png)
+
 Wolf3D was built using C.  It utilizes a mini-library derived from DirectX11 called minilibx.  The purpose of the project is to use ray-casting techniques to create a pseudo 3d labyrinth, and then navigate it.
 
 Each wall is a different texture according to its cardinal direction.
