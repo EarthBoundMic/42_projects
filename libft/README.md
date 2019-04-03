@@ -1,6 +1,6 @@
 # Standard Library Recreation
 
-Recreated select functions plus some custom functions to use as perosnal library.
+Recreated select functions plus some custom functions to use as personal library.
 
 ## Details
 
@@ -41,7 +41,7 @@ These functions mimic the standard library equivelants.
 
 ### Custom functions
 
-These created functionality that couldn't find in standard library.
+These created functionality that wasn't found in standard library.
 
 - **ft_atoi_base**: like ft_atoi, but outputs number according to specified base
 - **ft_dlen**: length of a double type number, including decimal point.
