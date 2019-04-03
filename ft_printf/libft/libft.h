@@ -69,6 +69,7 @@
 # define CHKCE(a, b, c) (a ? b : c)
 # define CHKMIN(a, b) (a < b ? a : b)
 # define CHKMAX(a, b) (a > b ? a : b)
+# define CHKABS(a) (a < 0 ? -a : a)
 
 /*
 **	Same concept here but with while loop
@@ -85,7 +86,7 @@
 
 # define LST2(a, b) if(1){ a; b;}
 # define LST3(a, b, c) if(1){ a; b; c;}
-# define LST4(a, b, c, d) if(1){ a; b; c; d}
+# define LST4(a, b, c, d) if(1){ a; b; c; d;}
 # define LST5(a, b, c, d, e) if(1){ a; b; c; d; e;}
 # define LST6(a, b, c, d, e, f) if(1){ a; b; c; d; e; f;}
 
@@ -199,13 +200,27 @@ char				*ft_strnstr(const char *haystack,
 size_t				ft_strlcat(char *dst, const char *src, size_t dstsize);
 char				*ft_strtrim(char const *s);
 char				*ft_itoa(int n);
+char				*ft_dtoa(double nbr, int prec, int cap);
+char				*ft_ldtoa(long double nbr, int prec, int cap);
 size_t				ft_strlen(const char *s);
 size_t				ft_strlen_diff(const char *s1, const char *s2);
 int					ft_nlen(int n);
+size_t				ft_dlen(double nbr, int prec);
+size_t				ft_ldlen(long double nbr, int prec);
+size_t				ft_splitlen(char **s);
 size_t				ft_word_count(const char *s, char c);
 size_t				ft_word_len(const char *s, char c);
 void				ft_word_cpy(char *d, const char *s, char c);
 char				*ft_fndfile(char *file);
+
+/*
+**	Functions for math
+*/
+
+int					ft_pow(int n, int x);
+long long			ft_llpow(int n, int x);
+double				ft_dpow(double n, double x);
+long double			ft_ldpow(double n, double x);
 
 /*
 **	Functions for printing

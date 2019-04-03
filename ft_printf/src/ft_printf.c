@@ -12,28 +12,36 @@
 
 #include "ft_printf.h"
 
-static int		conversion_flag_check(char **format, va_list *list, t_flag *f)
+static int		conversion_flag_check(char **format, va_list *list, t_pfflag *f)
 {
 	int				size;
 	t_conv_check	check;
 
-	CHK1(**format == '\0', 0);
+	if (**format == NIL)
+		return (0);
 	(*format)++;
-	CHK1(check_first_flags(format, f) == NULL, -1);
-	CHK1(check_field_width(format, f) == NULL, -1);
-	CHK1(check_precision(format, f) == NULL, -1);
-	CHK1(check_length(format, f) == NULL, -1);
-	CHK1(**format == '\0', 0);
-	CHKE(conv_init(**format) == NULL, check = check_conv_null,
-		check = conv_init(**format));
+	if (check_first_pfflags(format, f) == NULL)
+		return (-1);
+	if (check_field_width(format, list, f) == NULL)
+		return (-1);
+	if (check_precision(format, list, f) == NULL)
+		return (-1);
+	if (check_length(format, f) == NULL)
+		return (-1);
+	if (**format == NIL)
+		return (0);
+	if (conv_init(**format) == NULL)
+		check = check_conv_null;
+	else
+		check = conv_init(**format);
 	size = check(format, list, f);
 	(*format)++;
 	return (size);
 }
 
-static t_flag	flag_init(void)
+static t_pfflag	flag_init(void)
 {
-	t_flag	flagcheck;
+	t_pfflag	flagcheck;
 
 	flagcheck.hash = 0;
 	flagcheck.zero = 0;
@@ -43,27 +51,57 @@ static t_flag	flag_init(void)
 	flagcheck.wdth = 0;
 	flagcheck.prec = 0;
 	flagcheck.hex = 0;
+	flagcheck.cap = 0;
 	flagcheck.fldwidth = 0;
 	flagcheck.precision = 0;
 	flagcheck.length = 0;
 	return (flagcheck);
 }
 
+static size_t	print_str(char **fmt, size_t len)
+{
+	if (**fmt == CBGN)
+	{
+		if (color_parse(fmt))
+			return (len);
+		else
+		{
+			ft_putchar(**fmt);
+			(*fmt)++;
+			return (len + 1);
+		}
+	}
+	else if (**fmt != CONV)
+	{
+		ft_putchar(**fmt);
+		(*fmt)++;
+		return (len + 1);
+	}
+	return (len);
+}
+
 static int		check_args(const char *format, va_list *list, size_t len)
 {
-	char	*find_arg;
-	t_flag	flagcheck;
-	size_t	list_len;
+	t_pfflag	flagcheck;
+	char		*fmt;
+	size_t		list_len;
 
-	CHK1(*format == '\0', len);
-	find_arg = ft_strchr(format, '%');
-	CHK2(find_arg == NULL, ft_putstr(format), len + ft_strlen(format));
-	CHK2(find_arg > format, ft_putnstr(format, find_arg - format),
-		check_args(find_arg, list, len + (find_arg - format)));
-	flagcheck = flag_init();
-	return (CHKCE((list_len = conversion_flag_check((char **)&format, list,
-													&flagcheck)) < 0, -1,
-				check_args(format, list, len + list_len)));
+	CHK1(*format == NIL, len);
+	fmt = (char *)format;
+	while (*fmt)
+	{
+		if (*fmt == CBGN || *fmt != CONV)
+			len = print_str(&fmt, len);
+		else
+		{
+			flagcheck = flag_init();
+			list_len = len;
+			len += conversion_flag_check((char **)&fmt, list, &flagcheck);
+			if (len < list_len)
+				return (-1);
+		}
+	}
+	return (len);
 }
 
 int				ft_printf(const char *format, ...)

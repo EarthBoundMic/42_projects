@@ -6,53 +6,111 @@
 /*   By: mkass <michaelkass13@gmail.com>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 15:41:53 by mkass             #+#    #+#             */
-/*   Updated: 2018/07/12 16:31:52 by mkass            ###   ########.fr       */
+/*   Updated: 2018/09/06 15:35:28 by mkass            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*check_first_flags(char **format, t_flag *f)
+char	*check_first_pfflags(char **format, t_pfflag *f)
 {
-	CHK2(**format == '#' || **format == '0' || **format == '-' ||
-		**format == ' ' || **format == '+',
-		LST3(LST5(CHKV1(**format == '#', f->hash = 1),
-				CHKV1(**format == '0', f->zero = 1),
-				CHKV1(**format == '-', f->dash = 1),
-				CHKV1(**format == ' ', f->spce = 1),
-				CHKV1(**format == '+', f->plus = 1)),
-			(*format)++, CHKV1(f->dash, f->zero = 0)),
-		check_first_flags(format, f));
+	if (**format == HASH || **format == ZERO || **format == DASH ||
+		**format == SPCE || **format == PLUS)
+	{
+		if (**format == HASH)
+			f->hash = 1;
+		if (**format == ZERO)
+			f->zero = 1;
+		if (**format == DASH)
+			f->dash = 1;
+		if (**format == SPCE)
+			f->spce = 1;
+		if (**format == PLUS)
+			f->plus = 1;
+		if (f->dash)
+			f->zero = 0;
+		(*format)++;
+		return (check_first_pfflags(format, f));
+	}
 	return (*format);
 }
 
-char	*check_field_width(char **format, t_flag *f)
+char	*check_field_width(char **format, va_list *list, t_pfflag *f)
 {
+	int	chk;
+
 	f->fldwidth = 0;
-	CHKV2(ft_isdigit(**format), f->wdth = 1, WHLE(ft_isdigit(**format),
-						f->fldwidth = f->fldwidth * 10 + (*(*format)++ - '0')));
+	while (**format == STAR || ft_isdigit(**format))
+	{
+		if (**format == STAR)
+		{
+			(*format)++;
+			chk = va_arg(*list, int);
+			if (chk < 0)
+				f->dash = 1;
+			f->fldwidth = CHKABS(chk);
+			f->wdth = 1;
+		}
+		if (ft_isdigit(**format))
+		{
+			f->wdth = 1;
+			f->fldwidth = 0;
+			while (ft_isdigit(**format))
+				f->fldwidth = f->fldwidth * 10 + (*(*format)++ - ZERO);
+		}
+	}
 	return (*format);
 }
 
-char	*check_precision(char **format, t_flag *f)
+char	*check_precision(char **format, va_list *list, t_pfflag *f)
 {
+	int chk;
+
 	f->precision = 0;
-	CHKV3(**format == '.', f->prec = 1, (*format)++, WHLE(ft_isdigit(**format),
-		LST2(f->precision = f->precision * 10 + **format - '0', (*format)++)));
+	if (**format == PRID)
+	{
+		f->prec = 1;
+		(*format)++;
+		if (**format == STAR)
+		{
+			(*format)++;
+			chk = va_arg(*list, int);
+			if (chk >= 0)
+				f->precision = chk;
+			else
+				f->prec = 0;
+		}
+		while (ft_isdigit(**format))
+			f->precision = f->precision * 10 + (*(*format)++ - ZERO);
+	}
 	return (*format);
 }
 
-char	*check_length(char **format, t_flag *f)
+char	*check_length(char **format, t_pfflag *f)
 {
-	CHK2(**format == 'h' && *(*format + 1) == 'h', f->length = hh,
-		*format += 2);
-	CHK2(**format == 'l' && *(*format + 1) == 'l', f->length = ll,
-		*format += 2);
-	CHK5(**format == 'h' || **format == 'l' || **format == 'j' ||
-		**format == 'z',
-		CHKV1(**format == 'h', f->length = h),
-		CHKV1(**format == 'l', f->length = l),
-		CHKV1(**format == 'j', f->length = j),
-		CHKV1(**format == 'z', f->length = z), (*format)++);
+	if ((**format == HALF && *(*format + 1) == HALF) ||
+		((**format == LNGG && *(*format + 1) == LNGG)))
+	{
+		if (**format == HALF && *(*format + 1) == HALF)
+			f->length = hh;
+		else if ((**format == LNGG && *(*format + 1) == LNGG))
+			f->length = ll;
+		return (*format += 2);
+	}
+	if (**format == HALF || **format == LNGG || **format == INTM ||
+		**format == SIZT || **format == LNGL)
+	{
+		if (**format == HALF)
+			f->length = h;
+		if (**format == LNGG)
+			f->length = l;
+		if (**format == INTM)
+			f->length = j;
+		if (**format == SIZT)
+			f->length = z;
+		if (**format == LNGL)
+			f->length = lL;
+		(*format)++;
+	}
 	return (*format);
 }

@@ -12,61 +12,81 @@
 
 #include "ft_printf.h"
 
-static void	print_uint(uintmax_t n, int base, unsigned int len, t_flag *f)
+static void	print_uint(uintmax_t n, int base, unsigned int len, t_pfflag *f)
 {
-	CHKV1(f->prec, width_padding(len, f->precision, '0'));
-	CHK1(!(!n && f->prec && !f->precision),
-		CHKCE(f->hex, print_ubase(n, base), print_lbase(n, base)));
+	if (f->prec)
+		width_padding(len, f->precision, '0');
+	if (!(!n && f->prec && !f->precision))
+		CHKCE(f->hex, print_ubase(n, base), print_lbase(n, base));
 }
 
-int			parse_uint(uintmax_t n, int base, char *sign, t_flag *f)
+int			parse_uint(uintmax_t n, int base, char *sign, t_pfflag *f)
 {
 	int len;
 	int tlen;
 
-	CHKV1(f->prec, f->zero = 0);
+	if (f->prec)
+		f->zero = 0;
 	len = unlen(n, base);
-	CHKV4(f->wdth && !f->dash && f->zero,
-		CHKE(f->prec, f->precision = CHKMAX(f->fldwidth, f->precision),
-			f->precision = CHKMAX((int)f->fldwidth, len)),
-		CHKV1(f->hash && sign != NULL && n, f->precision -= ft_strlen(sign)),
-		f->prec = 1,
-		f->wdth = 0);
+	if (f->wdth && !f->dash && f->zero)
+	{
+		if (f->prec)
+			f->precision = CHKMAX(f->fldwidth, f->precision);
+		else
+			f->precision = CHKMAX((int)f->fldwidth, len);
+		if (f->hash && sign != NULL && n)
+			f->precision -= ft_strlen(sign);
+		f->prec = 1;
+		f->wdth = 0;
+	}
 	tlen = nbrlen(n, base, sign, f);
-	CHKV1(f->wdth && !f->dash, width_padding(tlen, f->fldwidth, ' '));
-	CHKV1(f->hash && sign != NULL && n, ft_putstr(sign));
+	left_width2(tlen, f);
+	if (f->hash && sign != NULL && n)
+		ft_putstr(sign);
 	print_uint(n, base, len, f);
-	CHKV1(f->wdth && f->dash, width_padding(tlen, f->fldwidth, ' '));
-	return (CHKCE(f->wdth, CHKMAX(tlen, (int)f->fldwidth), tlen));
+	right_width(tlen, f);
+	len = CHKMAX(tlen, (int)f->fldwidth);
+	return (CHKCE(f->wdth, len, tlen));
 }
 
-int			check_conv_oct(char **format, va_list *list, t_flag *f)
+int			check_conv_oct(char **format, va_list *list, t_pfflag *f)
 {
 	uintmax_t	n;
+	int			ret;
 
 	(void)format;
 	n = unsigned_nbr(list, f);
-	CHK4(f->hash && !n && f->prec && !f->precision,
-		CHKV1(f->wdth && !f->dash, width_padding(n, f->fldwidth,
-									CHKCE(f->zero, '0', ' '))), ft_putchar('0'),
-		CHKV1(f->wdth && f->dash, width_padding(n, f->fldwidth, ' ')),
-		CHKCE(f->wdth, CHKMAX((int)f->fldwidth, 1), 1));
-	CHKV2(f->hash && n, f->prec = 1,
-		f->precision = CHKMAX(f->precision, unlen(n, OCT) + 1));
+	if (f->hash && !n && f->prec && !f->precision)
+	{
+		left_width1(n, f);
+		ft_putchar(ZERO);
+		right_width(n, f);
+		ret = CHKMAX((int)f->fldwidth, 1);
+		return (CHKCE(f->wdth, ret, 1));
+	}
+	if (f->hash && n)
+	{
+		f->prec = 1;
+		f->precision = CHKMAX(f->precision, unlen(n, OCT) + 1);
+	}
 	return (parse_uint(n, OCT, NULL, f));
 }
 
-int			check_conv_hex(char **format, va_list *list, t_flag *f)
+int			check_conv_hex(char **format, va_list *list, t_pfflag *f)
 {
 	uintmax_t	n;
 
 	n = unsigned_nbr(list, f);
 	f->hex = 0;
-	CHK2(**format == 'X', f->hex = 1, parse_uint(n, HEX, "0X", f));
+	if (**format == 'X')
+	{
+		f->hex = 1;
+		return (parse_uint(n, HEX, "0X", f));
+	}
 	return (parse_uint(n, HEX, "0x", f));
 }
 
-int			check_conv_bin(char **format, va_list *list, t_flag *f)
+int			check_conv_bin(char **format, va_list *list, t_pfflag *f)
 {
 	uintmax_t	n;
 

@@ -14,11 +14,16 @@
 
 static int	widestr_precision(wchar_t *s, int prec, int ret)
 {
-	CHK1(*s == '\0' || prec == 0, ret);
-	CHK1(*s <= 0x7f, widestr_precision(s + 1, prec - 1, ret + 1));
-	CHK1(*s <= 0x7ff, widestr_precision(s + 1, prec - 2, ret + 2));
-	CHK1(*s <= 0xffff, widestr_precision(s + 1, prec - 3, ret + 3));
-	CHK1(*s <= 0x10ffff, widestr_precision(s + 1, prec - 4, ret + 4));
+	if (*s == NIL || prec <= 0)
+		return (ret);
+	if (*s <= 0x7f)
+		return (widestr_precision(s + 1, prec - 1, ret + 1));
+	if (*s <= 0x7ff)
+		return (widestr_precision(s + 2, prec - 2, ret + 2));
+	if (*s <= 0xffff)
+		return (widestr_precision(s + 3, prec - 3, ret + 3));
+	if (*s <= 0x10ffff)
+		return (widestr_precision(s + 4, prec - 4, ret + 4));
 	return (ret);
 }
 
@@ -27,10 +32,18 @@ static int	wide_strlen(wchar_t *s)
 	int ret;
 
 	ret = 0;
-	WHLE(*s, LST2(CHKE(*s <= 0x7f, ret++,
-					CHKE(*s <= 0x7ff, ret += 2,
-						CHKE(*s <= 0xffff, ret += 3,
-							CHKV1(*s <= 0x10ffff, ret += 4)))), s++));
+	while (*s)
+	{
+		if (*s <= 0x7f)
+			ret += 1;
+		else if (*s <= 0x7ff)
+			ret += 2;
+		else if (*s <= 0xffff)
+			ret += 3;
+		else if (*s <= 0x10ffff)
+			ret += 4;
+		s++;
+	}
 	return (ret);
 }
 
@@ -39,41 +52,51 @@ static int	nstrlen(char *s, int n)
 	int i;
 
 	i = 0;
-	WHLE(s[i] && i < n, i++);
+	while (s[i] && i < n)
+		i++;
 	return (i);
 }
 
-int			check_conv_wstr(char **format, va_list *list, t_flag *f)
+int			check_conv_wstr(char **format, va_list *list, t_pfflag *f)
 {
 	wchar_t	*s;
 	int		len;
 	int		i;
+	int		ret;
+	int		tlen;
 
 	(void)format;
 	i = 0;
 	s = va_arg(*list, wchar_t*);
-	CHKV1(s == NULL, s = L"(null)");
-	len = CHKCE(f->prec, widestr_precision(s, f->precision, 0), wide_strlen(s));
-	CHKV1(f->wdth && !f->dash, width_padding(len, f->fldwidth,
-											CHKCE(f->zero, '0', ' ')));
-	CHKV1((f->prec && f->precision) || !f->prec,
-		WHLE(s[i] && i < len, print_wchar(s[i++])));
-	CHKV1(f->wdth && f->dash, width_padding(len, f->fldwidth, ' '));
-	return (CHKCE(f->wdth, CHKMAX((int)f->fldwidth, len), len));
+	if (s == NULL)
+		s = L"(null)";
+	len = CHKCE(f->prec, wide_strlen_precision(s, f->precision, 0),
+												wide_strlen(s));
+	left_width1(len, f);
+	if ((f->prec && f->precision) || !f->prec)
+		while (s[i] && i < len)
+			print_wchar(s[i++]);
+	right_width(len, f);
+	tlen = CHKCE(f->prec, widestr_precision(s, f->precision, 0), len);
+	ret = CHKMAX((int)f->fldwidth, tlen);
+	return (CHKCE(f->wdth, ret, tlen));
 }
 
-int			check_conv_str(char **format, va_list *list, t_flag *f)
+int			check_conv_str(char **format, va_list *list, t_pfflag *f)
 {
 	char	*s;
 	int		len;
+	int		ret;
 
-	CHK1(f->length == l, check_conv_wstr(format, list, f));
+	if (f->length == l)
+		return (check_conv_wstr(format, list, f));
 	s = va_arg(*list, char*);
-	CHKV1(s == NULL, s = "(null)");
+	if (s == NULL)
+		s = "(null)";
 	len = CHKCE(f->prec, nstrlen(s, f->precision), ft_strlen(s));
-	CHKV1(f->wdth && !f->dash, width_padding(len, f->fldwidth,
-											CHKCE(f->zero, '0', ' ')));
+	left_width1(len, f);
 	ft_putnstr(s, len);
-	CHKV1(f->wdth && f->dash, width_padding(len, f->fldwidth, ' '));
-	return (CHKCE(f->wdth, CHKMAX((int)f->fldwidth, len), len));
+	right_width(len, f);
+	ret = CHKMAX((int)f->fldwidth, len);
+	return (CHKCE(f->wdth, ret, len));
 }

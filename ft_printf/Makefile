@@ -6,7 +6,7 @@
 #    By: mkass <michaelkass13@gmail.com>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/19 10:23:46 by mkass             #+#    #+#              #
-#    Updated: 2018/07/13 14:00:31 by mkass            ###   ########.fr        #
+#    Updated: 2018/10/18 13:31:27 by mkass            ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,37 +14,41 @@ NAME = libftprintf.a
 
 CFLAGS = -Wall -Wextra -Werror
 LIBFT = libft/libft.a
-HEADER = ft_printf.h
+HEADER = ft_printf.h ft_colors.h
 PRFHEADER = -I includes
-SDIR = src
+SDIR = src/
+INC = includes/
 MK = Makefile
-SRC = ft_printf.c flags.c conv_init.c conv_chars.c conv_strs.c conv_digits.c conv_trans.c conv_helpers.c conv_others.c
-SRCS = $(addprefix $(SDIR)/, $(SRC))
+SRC = ft_printf.c flags.c conv_init.c conv_chars.c conv_strs.c conv_digits.c \
+		conv_trans.c conv_helpers.c conv_others.c conv_helpers2.c colors.c \
+		color_check.c conv_double.c
+
 SRCO = $(SRC:.c=.o)
-EMACSTIL = $(addsuffix ~, $(SRCS))
-EMACSTIL += $(addsuffix ~, $(MK))
-EMACSTIL += $(addprefix includes/, $(addsuffix ~, $(HEADER)))
-EMACSHASH = $(addsuffix \#, $(addprefix $(SDIR)/\#, $(SRC)))
-EMACSHASH += $(addsuffix	\#, $(addprefix	\#, $(MK)))
-EMACSHASH += $(addsuffix \#, $(addprefix includes/\#, $(HEADER)))
+EMACS = $(SRC:%=$(SDIR)%~)
+EMACS += $(MK:%=%~)
+EMACS += $(HEADER:%=$(HDR)%~)
+EMACS += $(SRC:%=$(SDIR)\\\#%\\\#)
+EMACS += $(MK:%=\\\#%\\\#)
+EMACS += $(HEADER:%=$(INC)\\\#%\\\#)
 
 all: $(NAME)
 
-$(NAME):
-	@make -C libft/
-	@cp $(LIBFT) $(NAME)
-	@gcc $(CFLAGS) $(PRFHEADER) -c $(SRCS)
-	@ar rc $(NAME) $(SRCO)
-	@ranlib $(NAME)
+%.o: $(SDIR)%.c
+	gcc $(CFLAGS) $(PRFHEADER) -c $<
+
+$(NAME): $(SRCO)
+	make -C libft/
+	libtool -static -o $(NAME) $(LIBFT) $(SRCO)
+	ranlib $(NAME)
 
 clean:
-	@rm -f $(SRCO) $(EMACSTIL)
-	@rm -f $(EMACSHASH)
-	@make -C libft/ clean
+	/bin/rm -f $(SRCO)
+	/bin/rm -f $(EMACS)
+	make -C libft/ clean
 
 fclean: clean
-	@rm -f $(NAME)
-	@make -C libft/ fclean
+	/bin/rm -f $(NAME)
+	make -C libft/ fclean
 
 re: fclean all
 

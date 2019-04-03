@@ -17,13 +17,16 @@ static void		assign_check(t_conv_check *check)
 	int i;
 
 	i = -1;
-	WHLE(++i < 128, check[i] = NULL);
+	while (++i < 128)
+		check[i] = NULL;
 	check['%'] = &check_conv_percent;
 	check['b'] = &check_conv_bin;
 	check['c'] = &check_conv_char;
 	check['C'] = &check_conv_wchar;
 	check['d'] = &check_conv_int;
 	check['D'] = &check_conv_long;
+	check['f'] = &check_conv_fdbl;
+	check['F'] = &check_conv_ffdbl;
 	check['i'] = &check_conv_int;
 	check['o'] = &check_conv_oct;
 	check['O'] = &check_conv_long;
@@ -41,8 +44,16 @@ t_conv_check	conv_init(int c)
 {
 	static t_conv_check	*check = NULL;
 
-	CHKV2(check == NULL, check = malloc(sizeof(check) * 128),
-		CHKE(check == NULL, LST2(ft_putendl("error: malloc failed"), ft_exit()),
-			assign_check(check)));
+	if (check == NULL)
+	{
+		check = malloc(sizeof(check) * 128);
+		if (check == NULL)
+		{
+			ft_putendl("error: malloc failed");
+			ft_exit();
+		}
+		else
+			assign_check(check);
+	}
 	return (CHKCE(check[c] != NULL, check[c], NULL));
 }
