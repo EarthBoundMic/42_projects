@@ -1,0 +1,25 @@
+; tests the limits of pop
+
+pop
+push int8(0)
+pop
+pop
+push int8(0)
+push int8(0)
+push int8(0)
+push int8(0)
+push int8(0)
+push int8(0)
+push int8(0)
+pop
+pop
+pop
+pop
+pop
+pop
+pop
+pop
+
+; only 3 errors should show
+
+exit

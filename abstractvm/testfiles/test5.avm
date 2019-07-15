@@ -1,0 +1,58 @@
+; this is a mix...does have errors to test certain ones...a total of 7
+
+: umm... ; ERROR ; semicolon is only comment starter
+
+push double(45)
+push int32(345)
+push double(34)
+push int8(1) ; comment test...should have no error
+
+push float(423d) ; ERROR ; no letters allowed
+
+dump; another comment test
+push int16(4)
+push float(34)
+push int8(3)
+push int16(536)
+push int32(546241562)
+push float(134651)
+push int16(45)
+
+push int8(245) ; ERROR ; overflowed
+
+dump
+push int8(34)
+push double(63)
+
+; hopefully no issues
+
+pop
+print
+add
+assert int16(79)
+mod
+assert float(35)
+pop
+
+mul ; ERROR ; overflowed
+
+mod
+assert int32(536)
+
+push int8(this is a test) ; ERROR ; must be a number
+
+push float(34.56.23) ; ERROR ; too many decimal points
+
+push double(.45) ; ERROR ; must begin with a zero
+
+sub
+sub
+mod
+assert float(4)
+add
+mul
+mod
+add
+assert double(50.0)
+pop
+exit

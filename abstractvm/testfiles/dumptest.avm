@@ -1,0 +1,14 @@
+; showing that dump works
+
+dump
+
+push int8(1)
+push int8(2)
+push int8(3)
+
+dump
+dump
+
+; no error handling needed as a blank just doesn't print anything
+
+exit

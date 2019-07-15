@@ -1,0 +1,12 @@
+; testing the other limits of comments
+
+dump
+;dump
+d;ump
+du;mp
+dum;p
+dump;
+
+exit
+
+should only error 3 times

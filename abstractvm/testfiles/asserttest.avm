@@ -1,0 +1,37 @@
+; tests the limits of assert
+
+push int8(3)
+assert int8(3)
+assert int8(9)
+assert int16(3)
+pop
+
+push int16(3)
+assert int16(3)
+assert int16(9)
+assert int8(3)
+pop
+
+push int32(3)
+assert int32(3)
+assert int32(9)
+assert int8(3)
+pop
+
+push float(3)
+assert float(3)
+assert float(9)
+assert int8(3)
+pop
+
+push double(3)
+assert double(3)
+assert double(9)
+assert int8(3)
+pop
+
+assert int32(99999999999999999999)
+
+; only 11 errors should show
+
+exit

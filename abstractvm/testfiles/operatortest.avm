@@ -1,0 +1,380 @@
+; tests the limits of the operators
+; shows the operators working
+
+push int8(5)
+push int8(5)
+dump
+add
+dump
+pop
+push int16(5)
+push int16(5)
+dump
+add
+dump
+pop
+push int32(5)
+push int32(5)
+dump
+add
+dump
+pop
+push float(5)
+push float(5)
+dump
+add
+dump
+pop
+push double(5)
+push double(5)
+dump
+add
+dump
+pop
+
+push int8(6)
+push int8(5)
+dump
+sub
+dump
+pop
+push int16(6)
+push int16(5)
+dump
+sub
+dump
+pop
+push int32(6)
+push int32(5)
+dump
+sub
+dump
+pop
+push float(6)
+push float(5)
+dump
+sub
+dump
+pop
+push double(6)
+push double(5)
+dump
+sub
+dump
+pop
+
+push int8(5)
+push int8(5)
+dump
+mul
+dump
+pop
+push int16(5)
+push int16(5)
+dump
+mul
+dump
+pop
+push int32(5)
+push int32(5)
+dump
+mul
+dump
+pop
+push float(5)
+push float(5)
+dump
+mul
+dump
+pop
+push double(5)
+push double(5)
+dump
+mul
+dump
+pop
+
+push int8(5)
+push int8(5)
+dump
+div
+dump
+pop
+push int16(5)
+push int16(5)
+dump
+div
+dump
+pop
+push int32(5)
+push int32(5)
+dump
+div
+dump
+pop
+push float(5)
+push float(5)
+dump
+div
+dump
+pop
+push double(5)
+push double(5)
+dump
+div
+dump
+pop
+
+push int8(5)
+push int8(0)
+dump
+div
+pop
+pop
+push int16(5)
+push int16(0)
+dump
+div
+pop
+pop
+push int32(5)
+push int32(0)
+dump
+div
+pop
+pop
+push float(5)
+push float(0)
+dump
+div
+pop
+pop
+push double(5)
+push double(0)
+dump
+div
+pop
+pop
+
+push int8(6)
+push int8(5)
+dump
+mod
+dump
+pop
+push int16(6)
+push int16(5)
+dump
+mod
+dump
+pop
+push int32(6)
+push int32(5)
+dump
+mod
+dump
+pop
+push float(6)
+push float(5)
+dump
+mod
+dump
+pop
+push double(6)
+push double(5)
+dump
+mod
+dump
+pop
+
+push int8(5)
+push int8(0)
+dump
+mod
+pop
+pop
+push int16(5)
+push int16(0)
+dump
+mod
+pop
+pop
+push int32(5)
+push int32(0)
+dump
+mod
+pop
+pop
+push float(5)
+push float(0)
+dump
+mod
+pop
+pop
+push double(5)
+push double(0)
+dump
+mod
+pop
+pop
+
+; there are 10 errors so far
+
+push int8(5)
+push int16(5)
+dump
+add
+dump
+pop
+push int16(5)
+push int32(5)
+dump
+add
+dump
+pop
+push int32(5)
+push float(5)
+dump
+add
+dump
+pop
+push float(5)
+push double(5)
+dump
+add
+dump
+pop
+push double(5)
+push int8(5)
+dump
+add
+dump
+pop
+
+push int8(6)
+push int32(5)
+dump
+sub
+dump
+pop
+push int16(6)
+push float(5)
+dump
+sub
+dump
+pop
+push int32(6)
+push double(5)
+dump
+sub
+dump
+pop
+push float(6)
+push int8(5)
+dump
+sub
+dump
+pop
+push double(6)
+push int16(5)
+dump
+sub
+dump
+pop
+
+push int8(5)
+push float(5)
+dump
+mul
+dump
+pop
+push int16(5)
+push double(5)
+dump
+mul
+dump
+pop
+push int32(5)
+push int8(5)
+dump
+mul
+dump
+pop
+push float(5)
+push int16(5)
+dump
+mul
+dump
+pop
+push double(5)
+push int32(5)
+dump
+mul
+dump
+pop
+
+push int8(5)
+push double(5)
+dump
+div
+dump
+pop
+push int16(5)
+push int8(5)
+dump
+div
+dump
+pop
+push int32(5)
+push int16(5)
+dump
+div
+dump
+pop
+push float(5)
+push int32(5)
+dump
+div
+dump
+pop
+push double(5)
+push float(5)
+dump
+div
+dump
+pop
+
+push int8(6)
+push float(5)
+dump
+mod
+dump
+pop
+push int16(6)
+push int8(5)
+dump
+mod
+dump
+pop
+push int32(6)
+push double(5)
+dump
+mod
+dump
+pop
+push float(6)
+push int32(5)
+dump
+mod
+dump
+pop
+push double(6)
+push int16(5)
+dump
+mod
+dump
+pop
+
+; no further errors should show, so 10 errors total
+
+exit

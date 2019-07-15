@@ -1,0 +1,34 @@
+; A different test for some math and assersion
+
+push int8(67)
+push int8(21)
+push float(23556.24)
+push double(456.151)
+dump
+mod
+dump
+pop
+add
+print
+assert int8(88)
+push int16(87)
+mul
+push int8(32)
+push int8(3)
+mul
+mod
+assert int16(72)
+push float(85.0)
+
+; this next one is supposed to error
+
+assert float(31.0)
+
+dump
+pop
+
+; so is this next one
+
+add
+
+exit

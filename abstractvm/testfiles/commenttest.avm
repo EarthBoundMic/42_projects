@@ -1,0 +1,30 @@
+; testing the limits of comments
+
+push int8(0)
+;push int8(0)
+p;ush int8(0)
+pu;sh int8(0)
+pus;h int8(0)
+push; int8(0)
+push ;int8(0)
+push i;nt8(0)
+push in;t8(0)
+push int;8(0)
+push int8;(0)
+push int8(;0)
+push int8(0;)
+push int8(0); no space
+push int8(0) ; one space
+push int8(0)  ; two space
+push int8(0)   ; three space
+push int8(0)	; tab
+
+; no space
+ ; one space
+  ; two space
+   ; three space
+	; tab
+
+; only 11 errors should show
+
+exit

@@ -1,0 +1,25 @@
+; --------------------
+; This is a math test
+; --------------------
+
+push int16(25)
+push float(56.3)
+push int32(452)
+push double(34415.6555)
+push int8(78)
+print
+push int8(43)
+print
+dump
+add
+print
+dump
+div
+dump
+sub
+dump
+mul
+dump
+mod
+dump
+exit

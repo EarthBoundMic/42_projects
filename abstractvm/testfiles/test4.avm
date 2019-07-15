@@ -1,0 +1,56 @@
+; there should be only one line printed on standard output with no errors
+
+push float(325.4)
+push int16(3454)
+push float(74)
+push int32(8708862)
+
+; -----
+assert int32(8708862)
+; -----
+
+push int8(103)
+push int32(3545)
+push int16(6)
+push int32(10)
+push double(49692.6)
+push int8(2)
+push int8(62)
+push int16(5666)
+push float(325.73)
+
+sub
+sub
+
+; -----
+assert float(-5278.27)
+; -----
+
+mul
+mod
+
+; -----
+assert double(7466.44) ; because it's using two float numbers, have to be sure
+					   ; calculation is as accurate as possible
+; -----
+
+push int8(9)
+push int8(5)
+mul
+print
+mod
+
+; -----
+assert double(41.44) ; again...make sure its accurate as possible
+; -----
+
+pop
+mod
+mul
+
+; -----
+assert int32(21270)
+; -----
+
+exit
+.707281

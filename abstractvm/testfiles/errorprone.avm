@@ -1,0 +1,39 @@
+; this is a mix of errors
+
+ push int8(5)
+push ;int8(5)
+asert int8(5)
+assert int8(5)
+push int64(78)
+puhs int16(43)
+push int3245
+push int8(3
+push double67.32)
+drumpf
+pop
+mul
+mod
+print
+push int32(45)
+push int8;(3)
+div
+add
+sub
+mil
+sab
+udd
+mid
+dive
+print
+pip
+prent
+push  int16(67)
+push int8 (6)
+pushfloat(34.67)
+dump heytrh;thw
+push int32(234653166)
+push int32(34562623611)
+mul
+push int32(0)
+div
+mod

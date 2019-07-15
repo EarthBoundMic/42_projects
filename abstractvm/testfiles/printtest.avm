@@ -1,0 +1,17 @@
+; tests the limits of print
+
+print
+push int8(57)
+print
+push int16(57)
+print
+push int32(57)
+print
+push float(57)
+print
+push double(57)
+print
+
+; only 5 errors should show
+
+exit
