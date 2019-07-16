@@ -46,7 +46,7 @@ The following are the arithmetic operations.  Each one errors if there aren't en
 
 For sub, div, and mod, the notation is (next op top), as in top value performs operation from next value.
 
-For div and mod, if top is a zero, then an eror is thrown.
+For div and mod, if top is a zero, then an error is thrown.
 
 **exit**: Stops the execution of the commands.  Any commands inserted after exit are ignored.
 
