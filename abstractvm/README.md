@@ -18,11 +18,11 @@ There are a total of 12 commands.  Two of them require additional input as they 
 
 **push** *v*: Inserts data v to the stack. v must have the following form:
 
-	- **int8**(*n*) : Creates an 8-bit integer with value *n*.
-	- **int16**(*n*) : Creates a 16-bit integer with value *n*.
-	- **int32**(*n*) : Creates a 32-bit integer with value *n*.
-	- **float**(*z*) : Creates a float with value *z*.
-	- **double**(*z*) : Creates a double with value *z*.
+- **int8**(*n*) : Creates an 8-bit integer with value *n*.
+- **int16**(*n*) : Creates a 16-bit integer with value *n*.
+- **int32**(*n*) : Creates a 32-bit integer with value *n*.
+- **float**(*z*) : Creates a float with value *z*.
+- **double**(*z*) : Creates a double with value *z*.
 
 **assert** *v*: Checks if the the top of the stack is equal to the parameter of the instruction.  Both the type and the number must be exact, or an error is thrown.
 
@@ -32,21 +32,21 @@ There are a total of 12 commands.  Two of them require additional input as they 
 
 **print**: Prints the top value of the stack into a character.  Asserts if the value is an int8 type first.
 
-	The following are the arithmetic operations.  Each one errors if there aren't enough values to do the arithmetic with.
+The following are the arithmetic operations.  Each one errors if there aren't enough values to do the arithmetic with.
 
-	**add**: Performs the addition operation with the top value and the next value.
+**add**: Performs the addition operation with the top value and the next value.
 
-	**sub**: Performs the subtraction operation with the top value and the next value.
+**sub**: Performs the subtraction operation with the top value and the next value.
 
-	**mul**: Performs the multiplication operation with the top value and the next value.
+**mul**: Performs the multiplication operation with the top value and the next value.
 
-	**div**: Performs the division operation with the top value and the next value.
+**div**: Performs the division operation with the top value and the next value.
 
-	**mod**: Performs the modulo operation with the top value and the next value.
+**mod**: Performs the modulo operation with the top value and the next value.
 
-	For sub, div, and mod, the notation is (next op top), as in top value performs operation from next value.
+For sub, div, and mod, the notation is (next op top), as in top value performs operation from next value.
 
-	For div and mod, if top is a zero, then an eror is thrown.
+For div and mod, if top is a zero, then an eror is thrown.
 
 **exit**: Stops the execution of the commands.  Any commands inserted after exit are ignored.
 
@@ -66,23 +66,23 @@ Because the virtual machine is looking for specific commands in a specific manne
 
 INSTR :=
    push VALUE
- | pop
- | dump
- | assert VALUE
- | add
- | sub
- | mul
- | div
- | mod
- | print
- | exit
+   | pop
+   | dump
+   | assert VALUE
+   | add
+   | sub
+   | mul
+   | div
+   | mod
+   | print
+   | exit
 
 VALUE :=
    int8(N)
- | int16(N)
- | int32(N)
- | float(Z)
- | double(Z)
+   | int16(N)
+   | int32(N)
+   | float(Z)
+   | double(Z)
 
 N := [-]?[0..9]+
 
